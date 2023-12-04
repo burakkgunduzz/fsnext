@@ -68,7 +68,6 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
-    todos         Todo[]
 }
 
 model VerificationToken {
@@ -80,10 +79,10 @@ model VerificationToken {
 }
 
 model Todo {
-    text        String
-    id          String  @id @default(cuid())
-    completed   Boolean
-    createdById String
-    userId      String
-    createdBy   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    text      String
+    id        String  @id @default(cuid())
+    completed Boolean
+    userId    String
+
+    @@index([userId])
 }

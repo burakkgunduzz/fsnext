@@ -5,6 +5,9 @@ import {
 } from "@/server/api/trpc";
 
 export const todosRouter = createTRPCRouter({
+    getAll: protectedProcedure.query(({ctx}) => {
+        return ctx.db.todo.findMany()
+    })
     // create: protectedProcedure
     // .input(z.string().min(2,"your todo should be at least 2 characters length"))
     // .mutation(({ctx, input}) => {

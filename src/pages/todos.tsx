@@ -1,6 +1,13 @@
+import { api } from "@/utils/api";
+
 export default function Todos() {
+  const { data, isLoading } = api.todos.getAll.useQuery();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (!data) return <div>Something Went Wrong!</div>;
+
   return (
-    <div className="min-h-screen  bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+    <div>
       <div>
         <div className="flex flex-col text-xl text-white">
           <label htmlFor="todo-input">enter your todo here</label>
@@ -13,7 +20,11 @@ export default function Todos() {
 
       <div className="mt-4">
         <h1 className="text-center text-2xl text-white">Todo List</h1>
-        <ul></ul>
+        <ul>
+          {data.map((todo) => (
+            <li>{todo.text}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );
