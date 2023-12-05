@@ -19,6 +19,7 @@ export const todosRouter = createTRPCRouter({
       where: { userId: ctx.session.user.id },
     });
   }),
+
   create: protectedProcedure
     .input(
       z.string().min(2, "your todo should be at least 2 characters length"),
@@ -35,6 +36,23 @@ export const todosRouter = createTRPCRouter({
           completed: false,
           userId,
         },
+      });
+    }),
+
+  update: protectedProcedure
+    .input(z.object({ todoId: z.string(), completed: z.boolean() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.db.todo.update({
+        where: { id: input.todoId, userId: ctx.session.user.id },
+        data: { completed: input.completed },
+      });
+    }),
+
+  delete: protectedProcedure
+    .input(z.object({ todoId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.db.todo.delete({
+        where: { id: input.todoId, userId: ctx.session.user.id },
       });
     }),
 });

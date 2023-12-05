@@ -5,9 +5,10 @@ import toast from "react-hot-toast";
 
 export default function Todos() {
   const [todoInput, setTodoInput] = useState("");
-
   const ctx = api.useUtils();
+
   const { data, isLoading } = api.todos.getAll.useQuery();
+
   const { mutate } = api.todos.create.useMutation({
     onSuccess: () => {
       setTodoInput("");
@@ -17,6 +18,21 @@ export default function Todos() {
       const errorMessage = err.data?.zodError?.formErrors;
       if (errorMessage?.[0]) toast.error(errorMessage[0]);
       else toast.error(err.message);
+    },
+  });
+
+  const { mutate: updateTodo, isLoading: isTodoUpdating } =
+    api.todos.update.useMutation({
+      onSuccess: () => {
+        void ctx.todos.invalidate();
+        toast.success("Updated successfully!");
+      },
+    });
+
+  const { mutate: deleteTodoMutation } = api.todos.delete.useMutation({
+    onSuccess: () => {
+      void ctx.todos.invalidate();
+      toast.success("Deleted successfully!");
     },
   });
 
@@ -54,9 +70,29 @@ export default function Todos() {
 
       <div className="mt-4">
         <h1 className="text-center text-2xl text-white">Todo List</h1>
-        <ul>
+        <ul className="ml-4">
           {data.map((todo) => (
-            <li className="text-white">{todo.text}</li>
+            <li key={todo.id} className="mb-2 text-white">
+              <input
+                type="checkbox"
+                className="mr-1"
+                checked={todo.completed}
+                onChange={(evt) => {
+                  updateTodo({
+                    todoId: todo.id,
+                    completed: evt.target.checked,
+                  });
+                }}
+                disabled={isTodoUpdating}
+              />
+              {todo.text}{" "}
+              <button
+                onClick={() => deleteTodoMutation({ todoId: todo.id })}
+                className="rounded bg-white p-1 text-red-700"
+              >
+                delete me
+              </button>
+            </li>
           ))}
         </ul>
       </div>

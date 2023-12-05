@@ -31,9 +31,11 @@ export default function Home() {
             )}
             <AuthShowcase />
           </div>
-          <Link href="/todos" className="bg-red text-lg text-white">
-            go to todos page
-          </Link>
+          {session && (
+            <Link href="/todos" className="bg-red text-lg text-white">
+              go to todos page
+            </Link>
+          )}
         </div>
       </main>
     </>
