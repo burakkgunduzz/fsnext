@@ -11,7 +11,7 @@ const ratelimit = new Ratelimit({
   analytics: true,
 });
 
-export const todosRouter = createTRPCRouter({
+export const todoRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.db.todo.findMany({
       orderBy: { createdAt: "desc" },

@@ -7,12 +7,12 @@ export default function Todos() {
   const [todoInput, setTodoInput] = useState("");
   const ctx = api.useUtils();
 
-  const { data, isLoading } = api.todos.getAll.useQuery();
+  const { data, isLoading } = api.todo.getAll.useQuery();
 
-  const { mutate } = api.todos.create.useMutation({
+  const { mutate } = api.todo.create.useMutation({
     onSuccess: () => {
       setTodoInput("");
-      void ctx.todos.invalidate();
+      void ctx.todo.invalidate();
     },
     onError: (err) => {
       const errorMessage = err.data?.zodError?.formErrors;
@@ -22,16 +22,16 @@ export default function Todos() {
   });
 
   const { mutate: updateTodo, isLoading: isTodoUpdating } =
-    api.todos.update.useMutation({
+    api.todo.update.useMutation({
       onSuccess: () => {
-        void ctx.todos.invalidate();
+        void ctx.todo.invalidate();
         toast.success("Updated successfully!");
       },
     });
 
-  const { mutate: deleteTodoMutation } = api.todos.delete.useMutation({
+  const { mutate: deleteTodoMutation } = api.todo.delete.useMutation({
     onSuccess: () => {
-      void ctx.todos.invalidate();
+      void ctx.todo.invalidate();
       toast.success("Deleted successfully!");
     },
   });
