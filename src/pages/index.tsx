@@ -1,11 +1,9 @@
-import { api } from "@/utils/api";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { AuthShowcase } from "@/components/AuthShowCase";
 import Link from "next/link";
 
 export default function Home() {
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
   const { data: session } = useSession();
 
   return (
@@ -17,9 +15,6 @@ export default function Home() {
           </h1>
 
           <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-white">
-              {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-            </p>
             {!!session?.user && (
               <Image
                 width={50}
