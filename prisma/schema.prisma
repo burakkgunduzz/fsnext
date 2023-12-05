@@ -80,9 +80,10 @@ model VerificationToken {
 
 model Todo {
     text      String
-    id        String  @id @default(cuid())
+    id        String   @id @default(cuid())
     completed Boolean
     userId    String
+    createdAt DateTime @default(now())
 
     @@index([userId])
 }
