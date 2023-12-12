@@ -16,7 +16,11 @@ export const todoRouter = createTRPCRouter({
     return ctx.db.todo.findMany({
       orderBy: { createdAt: "desc" },
       take: 100,
-      where: { userId: ctx.session.user.id },
+      where: {
+        author: {
+          id: ctx.session.user.id,
+        },
+      },
     });
   }),
 
@@ -34,7 +38,7 @@ export const todoRouter = createTRPCRouter({
         data: {
           text: input,
           completed: false,
-          userId,
+          author: { connect: { id: userId } },
         },
       });
     }),
