@@ -3,6 +3,8 @@ import { signIn, signOut, useSession } from "next-auth/react";
 export function AuthShowcase() {
   const { data: sessionData } = useSession();
 
+  console.log("codeowners test")
+
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <p className="text-center text-2xl text-white">
